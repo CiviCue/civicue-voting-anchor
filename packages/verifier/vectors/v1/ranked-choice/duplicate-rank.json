@@ -1,0 +1,17 @@
+{
+  "description": "A ranking lists the same option twice; rejected.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "RANKED_CHOICE",
+    "options": ["A", "B"],
+    "ballots": [
+      {
+        "voter": 1,
+        "rankedOptions": ["A", "A"]
+      }
+    ]
+  },
+  "expected": {
+    "error": "INVALID_DATASET"
+  }
+}

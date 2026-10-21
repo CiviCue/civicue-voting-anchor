@@ -1,0 +1,22 @@
+{
+  "description": "All continuing options are level with no majority; the race ends in a tie.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "RANKED_CHOICE",
+    "options": ["A", "B"],
+    "ballots": [
+      {
+        "voter": 1,
+        "rankedOptions": ["A", "B"]
+      },
+      {
+        "voter": 2,
+        "rankedOptions": ["B", "A"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0x65190f4ca3166df79914c87f397360c17e8682f181affdeb5b0b66c42bfae01c",
+    "tallyHash": "0x700d140229e64c4382582f0ed80dfc5dd9261102185e7c9c3fe08d85201c6475"
+  }
+}

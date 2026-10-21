@@ -1,0 +1,11 @@
+# Public leak-guard tier: structural path rules only, one regex per line, matched against
+# repo-relative file paths (never file content). Term patterns belong in the private tier, the
+# LEAK_DENYLIST Actions secret, because a term listed here is itself a disclosure.
+
+# Environment files (an .env.example template is fine).
+(^|/)\.env(\.(?!example$)[^/]+)?$
+
+# Key material.
+\.(pem|key|p12|pfx|jks|keystore)$
+(^|/)keystores?/
+(^|/)id_(rsa|ecdsa|ed25519)$

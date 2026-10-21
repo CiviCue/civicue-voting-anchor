@@ -1,0 +1,40 @@
+{
+  "name": "@civicue/voting-anchor-contracts",
+  "version": "0.1.0",
+  "description": "AnchorRegistry contract ABI, deployment records, and sessionId encoding fixture for CiviCue on-chain vote anchoring.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CiviCue/civicue-voting-anchor.git",
+    "directory": "packages/contracts"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./deployments/*.json": "./deployments/*.json",
+    "./fixtures/*.json": "./fixtures/*.json"
+  },
+  "files": [
+    "dist",
+    "deployments",
+    "fixtures",
+    "README.zh-TW.md",
+    "src"
+  ],
+  "scripts": {
+    "build": "forge build && wagmi generate && node scripts/gen-artifact.ts && tsc -p tsconfig.json",
+    "test": "forge test && node --test \"test-ts/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.scripts.json",
+    "test:integration": "node --test \"test-ts/**/*.test.ts\""
+  },
+  "peerDependencies": {
+    "viem": "^2.57.0"
+  },
+  "devDependencies": {
+    "@wagmi/cli": "^2.10.0",
+    "viem": "^2.57.4"
+  }
+}

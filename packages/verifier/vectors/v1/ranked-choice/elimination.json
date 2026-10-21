@@ -1,0 +1,46 @@
+{
+  "description": "No first-round majority; options are eliminated and their ballots transfer over several rounds.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "RANKED_CHOICE",
+    "options": ["A", "B", "C", "D"],
+    "ballots": [
+      {
+        "voter": 1,
+        "rankedOptions": ["A", "B"]
+      },
+      {
+        "voter": 2,
+        "rankedOptions": ["A", "C"]
+      },
+      {
+        "voter": 3,
+        "rankedOptions": ["A"]
+      },
+      {
+        "voter": 4,
+        "rankedOptions": ["B", "C", "D"]
+      },
+      {
+        "voter": 5,
+        "rankedOptions": ["B", "D"]
+      },
+      {
+        "voter": 6,
+        "rankedOptions": ["D", "B"]
+      },
+      {
+        "voter": 7,
+        "rankedOptions": ["D", "C"]
+      },
+      {
+        "voter": 8,
+        "rankedOptions": ["C", "D", "A"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0x70f7e2596c80b1a1051a34fef997995b34cee1ee3c2c337b407ff0e3872ed8d8",
+    "tallyHash": "0x046f438aa37b07ef01a1a08943c88cbed093cda6781435e2cf62a9d0dab6ae8a"
+  }
+}

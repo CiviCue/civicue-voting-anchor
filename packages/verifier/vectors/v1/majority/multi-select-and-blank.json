@@ -1,0 +1,31 @@
+{
+  "description": "Multi-select ballots (selections unordered in input) and one blank ballot; an unknown top-level field is ignored.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "MAJORITY",
+    "options": ["opt-1", "opt-2", "opt-3"],
+    "generatedAt": "ignored",
+    "ballots": [
+      {
+        "voter": 1,
+        "optionIds": ["opt-3", "opt-1"]
+      },
+      {
+        "voter": 2,
+        "optionIds": []
+      },
+      {
+        "voter": 3,
+        "optionIds": ["opt-2", "opt-1"]
+      },
+      {
+        "voter": 4,
+        "optionIds": ["opt-1"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0xcd3b91c92693389f167b210a890ba3f0dea4b8f894649fcb8f7e950368a32e88",
+    "tallyHash": "0x738720be7570067fc617aa742b7c65bbefa2a4fdb98a81afb379b10da5029c03"
+  }
+}

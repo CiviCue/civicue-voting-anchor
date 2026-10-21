@@ -1,0 +1,68 @@
+name: leak-guard
+
+# Never use pull_request_target here: fork PRs must not receive LEAK_DENYLIST.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  GITLEAKS_VERSION: 8.30.1
+  GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb # linux_x64
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Leak guard self-test
+        run: |
+          pnpm exec tsc -p scripts/tsconfig.json
+          node --test scripts/leak-guard.test.ts
+
+      - name: Install gitleaks
+        run: |
+          archive="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfL -o "$archive" "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/${archive}"
+          echo "${GITLEAKS_SHA256}  ${archive}" | sha256sum --check --strict
+          tar -xzf "$archive" gitleaks
+          sudo install gitleaks /usr/local/bin/gitleaks
+
+      - name: Secrets (gitleaks)
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            gitleaks git --no-banner --redact --verbose --config .gitleaks.toml --log-opts="${BASE_SHA}..HEAD" .
+          else
+            # HEAD's full history only; the default would scan every fetched ref.
+            gitleaks git --no-banner --redact --verbose --config .gitleaks.toml --log-opts=HEAD .
+          fi
+
+      - name: Deny-lists
+        if: ${{ !cancelled() }}
+        env:
+          LEAK_DENYLIST: ${{ secrets.LEAK_DENYLIST }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            node scripts/leak-guard.ts --diff "$BASE_SHA"
+          else
+            node scripts/leak-guard.ts --all
+          fi

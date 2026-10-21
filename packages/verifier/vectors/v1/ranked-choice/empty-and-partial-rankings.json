@@ -1,0 +1,42 @@
+{
+  "description": "Empty rankings are exhausted from round 1; partial rankings exhaust once their options are eliminated, shrinking the majority threshold.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "RANKED_CHOICE",
+    "options": ["A", "B", "C"],
+    "ballots": [
+      {
+        "voter": 1,
+        "rankedOptions": []
+      },
+      {
+        "voter": 2,
+        "rankedOptions": ["C"]
+      },
+      {
+        "voter": 3,
+        "rankedOptions": ["A"]
+      },
+      {
+        "voter": 4,
+        "rankedOptions": ["A", "B"]
+      },
+      {
+        "voter": 5,
+        "rankedOptions": ["B"]
+      },
+      {
+        "voter": 6,
+        "rankedOptions": ["B", "C"]
+      },
+      {
+        "voter": 7,
+        "rankedOptions": ["B"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0xc9ce37a096f744cc08a24c6c0913c41b7a4f1dd62bfa29fcf6a215dcaaf26772",
+    "tallyHash": "0xbdfc75d0360f948655115610a6bbb3df580befbdc6c5ab1df5c8baeac95b7f2b"
+  }
+}

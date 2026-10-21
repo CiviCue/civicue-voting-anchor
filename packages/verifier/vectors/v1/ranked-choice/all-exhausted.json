@@ -1,0 +1,22 @@
+{
+  "description": "Every ranking is empty; there is no winner.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "RANKED_CHOICE",
+    "options": ["A", "B"],
+    "ballots": [
+      {
+        "voter": 1,
+        "rankedOptions": []
+      },
+      {
+        "voter": 2,
+        "rankedOptions": []
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0xbf1e1ae45213b4151317ebe1d96bbc8541e98eefdc31e1c4e023efa4377a0dc9",
+    "tallyHash": "0x448180ebde9744254dab933af7e324e99d4311eb5d740e013f3e52c928595e11"
+  }
+}

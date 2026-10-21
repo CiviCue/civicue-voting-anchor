@@ -1,0 +1,58 @@
+name: mock-platform
+
+on:
+  pull_request:
+    paths:
+      - "packages/mock-platform/**"
+      - "packages/verifier/**"
+      - "packages/contracts/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/mock-platform.yml"
+  push:
+    branches: [main]
+    paths:
+      - "packages/mock-platform/**"
+      - "packages/verifier/**"
+      - "packages/contracts/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/mock-platform.yml"
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: packages/mock-platform
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Builds the AnchorRegistry artifact the devnet deploys, and provides anvil.
+      - uses: foundry-rs/foundry-toolchain@v1
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: .
+
+      - name: Build contracts and verifier (the rehearsal runs the built CLI)
+        run: |
+          pnpm --filter @civicue/voting-anchor-contracts build
+          pnpm --filter @civicue/voting-anchor-verifier build
+        working-directory: .
+
+      - name: Lint (typecheck + prettier)
+        run: pnpm lint
+
+      - name: Test (conformance vectors, random cross-check, anvil rehearsal of tasks 5.1 and 5.2)
+        run: pnpm test

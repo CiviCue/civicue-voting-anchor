@@ -1,0 +1,14 @@
+**/node_modules/
+**/dist/
+**/coverage/
+pnpm-lock.yaml
+
+# Foundry
+packages/contracts/lib/
+packages/contracts/out/
+packages/contracts/cache/
+packages/contracts/broadcast/
+
+# Generated at build time
+packages/contracts/ts/generated.ts
+packages/contracts/ts/artifact.ts

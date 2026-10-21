@@ -1,0 +1,33 @@
+{
+  "description": "Two options tie on summed votes; both are winners.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "QUADRATIC",
+    "voiceCredits": 4,
+    "options": ["A", "B"],
+    "ballots": [
+      {
+        "voter": 1,
+        "allocations": {
+          "A": 2
+        }
+      },
+      {
+        "voter": 2,
+        "allocations": {
+          "B": 1
+        }
+      },
+      {
+        "voter": 3,
+        "allocations": {
+          "B": 1
+        }
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0xcb3fc1a44350248b87a596e2ff9f5f310fc5b3db4774e1e688ea3ba4a5cf98a3",
+    "tallyHash": "0x2d7e113a0d651ab3604dcfb886eccea9b5b78c8dd718e2b3e831bfffc993dca1"
+  }
+}

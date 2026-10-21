@@ -1,0 +1,30 @@
+{
+  "description": "B and C tie for last with no earlier round to separate them; the smaller option id (B) is eliminated.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "RANKED_CHOICE",
+    "options": ["A", "B", "C"],
+    "ballots": [
+      {
+        "voter": 1,
+        "rankedOptions": ["A"]
+      },
+      {
+        "voter": 2,
+        "rankedOptions": ["A"]
+      },
+      {
+        "voter": 3,
+        "rankedOptions": ["B", "C"]
+      },
+      {
+        "voter": 4,
+        "rankedOptions": ["C", "B"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0xc283df8622dbcb1681ad754fe8d3a3ad939857a02c89c47c3ab3ebe26ed08d53",
+    "tallyHash": "0xb0238ea771465306a698362c0e2c278043ddf4db4dd2c1b28c539033ca3c6cba"
+  }
+}

@@ -1,0 +1,63 @@
+name: verifier
+
+on:
+  pull_request:
+    paths:
+      - "packages/verifier/**"
+      - "packages/contracts/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/verifier.yml"
+  push:
+    branches: [main]
+    paths:
+      - "packages/verifier/**"
+      - "packages/contracts/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/verifier.yml"
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: packages/verifier
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Builds the AnchorRegistry ABI the verifier imports, and provides anvil for the e2e tests.
+      - uses: foundry-rs/foundry-toolchain@v1
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: .
+
+      - name: Build contracts package (forge + ABI codegen + TypeScript)
+        run: pnpm --filter @civicue/voting-anchor-contracts build
+        working-directory: .
+
+      - name: Lint (typecheck + prettier)
+        run: pnpm lint
+
+      - name: Test (conformance vectors, sessionId fixture, recompute, anvil e2e)
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Package smoke test
+        run: |
+          node dist/cli.js verify --help
+          node --input-type=module -e "import { loadVectors } from '@civicue/voting-anchor-verifier/vectors'; if (loadVectors().length === 0) process.exit(1)"
+          npm pack --dry-run

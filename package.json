@@ -1,0 +1,22 @@
+{
+  "name": "civicue-voting-anchor",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": "^24.16.0"
+  },
+  "packageManager": "pnpm@10.26.2",
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.1",
+    "prettier": "^3.9.9",
+    "typescript": "^7.0.2"
+  }
+}

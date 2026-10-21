@@ -1,0 +1,17 @@
+{
+  "description": "A ballot selects an option that is not in options; rejected.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "MAJORITY",
+    "options": ["A", "B"],
+    "ballots": [
+      {
+        "voter": 1,
+        "optionIds": ["Z"]
+      }
+    ]
+  },
+  "expected": {
+    "error": "INVALID_DATASET"
+  }
+}

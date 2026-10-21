@@ -1,0 +1,33 @@
+{
+  "description": "A dataset declaring a schemaVersion this verifier does not implement is reported as unsupported, not as a failure.",
+  "dataset": {
+    "schemaVersion": 99,
+    "votingMethod": "MAJORITY",
+    "options": ["A", "B", "C"],
+    "ballots": [
+      {
+        "voter": 1,
+        "optionIds": ["A"]
+      },
+      {
+        "voter": 2,
+        "optionIds": ["B"]
+      },
+      {
+        "voter": 3,
+        "optionIds": ["A"]
+      },
+      {
+        "voter": 4,
+        "optionIds": ["C"]
+      },
+      {
+        "voter": 5,
+        "optionIds": ["A"]
+      }
+    ]
+  },
+  "expected": {
+    "error": "UNSUPPORTED_SCHEMA_VERSION"
+  }
+}

@@ -1,0 +1,8 @@
+title = "civicue-voting-anchor"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Documented placeholders, such as API_KEY=… or --rpc-url <base-rpc-url>"
+regexes = ['''^(…|<[a-z0-9-]+>|\$\{[A-Z0-9_]+\})$''']

@@ -1,0 +1,21 @@
+{
+  "description": "Voter indexes must be exactly 1..n; a gap is rejected.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "MAJORITY",
+    "options": ["A", "B"],
+    "ballots": [
+      {
+        "voter": 1,
+        "optionIds": ["A"]
+      },
+      {
+        "voter": 3,
+        "optionIds": ["B"]
+      }
+    ]
+  },
+  "expected": {
+    "error": "INVALID_DATASET"
+  }
+}

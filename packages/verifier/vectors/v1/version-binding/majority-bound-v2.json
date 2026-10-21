@@ -1,0 +1,35 @@
+{
+  "description": "The majority/basic.json dataset with version 2 bound into both hashes instead of 1: merkleRoot and tallyHash both differ from majority/basic.json.",
+  "bindVersion": 2,
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "MAJORITY",
+    "options": ["A", "B", "C"],
+    "ballots": [
+      {
+        "voter": 1,
+        "optionIds": ["A"]
+      },
+      {
+        "voter": 2,
+        "optionIds": ["B"]
+      },
+      {
+        "voter": 3,
+        "optionIds": ["A"]
+      },
+      {
+        "voter": 4,
+        "optionIds": ["C"]
+      },
+      {
+        "voter": 5,
+        "optionIds": ["A"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0x82f6c8398c654db288c5be8f814f65566b9429c4aec3a3e17153cb30d30c222c",
+    "tallyHash": "0x87a781b2da4eb1f1bca1247a0abe36ee46e40422016639c5a9b7697e424cdf6f"
+  }
+}

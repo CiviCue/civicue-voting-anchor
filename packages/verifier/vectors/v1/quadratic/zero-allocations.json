@@ -1,0 +1,40 @@
+{
+  "description": "Zero entries are dropped and an empty allocation is a valid ballot; spending exactly the budget is allowed.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "QUADRATIC",
+    "voiceCredits": 9,
+    "options": ["A", "B"],
+    "ballots": [
+      {
+        "voter": 1,
+        "allocations": {
+          "A": 0,
+          "B": 3
+        }
+      },
+      {
+        "voter": 2,
+        "allocations": {}
+      },
+      {
+        "voter": 3,
+        "allocations": {
+          "A": 0,
+          "B": 0
+        }
+      },
+      {
+        "voter": 4,
+        "allocations": {
+          "A": 2,
+          "B": 2
+        }
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0x8da9744d4d53cad3cd88a77043b718711de264b7b1d37f81e3966b8067c35066",
+    "tallyHash": "0x058ca4aa3a4fdafaaac7d58a9704f029128cf292d5a69a2e81ef757f363c79f6"
+  }
+}

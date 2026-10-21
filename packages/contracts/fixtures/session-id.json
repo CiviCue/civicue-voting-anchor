@@ -1,0 +1,25 @@
+{
+  "description": "sessionId = keccak256(bytes(lowercase(sessionIdString))). `input` is the session id as received; `normalized` is its lowercase form; `sessionId` is the on-chain bytes32 key.",
+  "cases": [
+    {
+      "input": "65f1c2a9e4b0d3f7a8c91e20",
+      "normalized": "65f1c2a9e4b0d3f7a8c91e20",
+      "sessionId": "0x009568d07b457170327bd557ce0d8658ef696946c6dce6e84f2879a70b1a7e18"
+    },
+    {
+      "input": "6650A3B2C1D0E9F8A7B6C5D4",
+      "normalized": "6650a3b2c1d0e9f8a7b6c5d4",
+      "sessionId": "0x1bbafa044774e78628e49e5b859e2ff69b10d80250f60deb09d6ed27570e013f"
+    },
+    {
+      "input": "000000000000000000000000",
+      "normalized": "000000000000000000000000",
+      "sessionId": "0x9a9a3bde4769048cd13256e22874c292193b20790f2c68c4ebd921af4ab9226e"
+    },
+    {
+      "input": "ffffffffffffffffffffffff",
+      "normalized": "ffffffffffffffffffffffff",
+      "sessionId": "0x3e23fe0e666570f9705c0697b5341369519de1b9542a5e0d6b88827c7572cba0"
+    }
+  ]
+}

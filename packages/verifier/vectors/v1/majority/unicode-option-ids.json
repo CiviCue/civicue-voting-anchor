@@ -1,0 +1,26 @@
+{
+  "description": "Non-ASCII option ids are UTF-8 encoded and sorted by UTF-16 code units.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "MAJORITY",
+    "options": ["贊成", "反對", "Abstain"],
+    "ballots": [
+      {
+        "voter": 1,
+        "optionIds": ["贊成"]
+      },
+      {
+        "voter": 2,
+        "optionIds": ["反對"]
+      },
+      {
+        "voter": 3,
+        "optionIds": ["贊成"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0x64598e8c1d8a6c32b64a78fee4e91eb1a5e2dba0a74d12400ae13dce3c4916e5",
+    "tallyHash": "0xe9d399f991064ec4863b1955b60ce8dfebdf77bf25eaa74a46aabaf6af26a5c6"
+  }
+}

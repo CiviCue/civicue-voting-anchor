@@ -1,0 +1,26 @@
+{
+  "description": "A holds a strict majority of first preferences; one round.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "RANKED_CHOICE",
+    "options": ["A", "B", "C"],
+    "ballots": [
+      {
+        "voter": 1,
+        "rankedOptions": ["A", "B", "C"]
+      },
+      {
+        "voter": 2,
+        "rankedOptions": ["A", "C"]
+      },
+      {
+        "voter": 3,
+        "rankedOptions": ["B", "A"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0xc28e63aee512195cb87da8cadf10c5769d57c905606456e74e72d20839ab2beb",
+    "tallyHash": "0xb38251f0128404bee3e639ecf84b694db15e77a35bba302c9858e2af72debe71"
+  }
+}

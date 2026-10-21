@@ -1,0 +1,21 @@
+{
+  "name": "@civicue/voting-anchor-mock-platform",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A mock CiviCue platform (voting, producer, worker, verification API) built from the public docs, for rehearsing end-to-end verification on a local chain.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "devnet": "node src/devnet.ts",
+    "test": "node --test \"test/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json && prettier --check . --ignore-path ../../.prettierignore"
+  },
+  "dependencies": {
+    "@civicue/voting-anchor-contracts": "workspace:*",
+    "viem": "^2.57.4"
+  },
+  "devDependencies": {
+    "@civicue/voting-anchor-verifier": "workspace:*"
+  }
+}

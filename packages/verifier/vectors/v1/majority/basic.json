@@ -1,0 +1,34 @@
+{
+  "description": "Five single-choice ballots; A wins 3-1-1.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "MAJORITY",
+    "options": ["A", "B", "C"],
+    "ballots": [
+      {
+        "voter": 1,
+        "optionIds": ["A"]
+      },
+      {
+        "voter": 2,
+        "optionIds": ["B"]
+      },
+      {
+        "voter": 3,
+        "optionIds": ["A"]
+      },
+      {
+        "voter": 4,
+        "optionIds": ["C"]
+      },
+      {
+        "voter": 5,
+        "optionIds": ["A"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0xd9c369ebcdfd24f0a2a1a217d48d05956c7ae6e4a461b79612a61bf4349266ac",
+    "tallyHash": "0x9f33d86f35df1b28a0541a2d16acf342ee869a5257072296cdf8264a1508604f"
+  }
+}

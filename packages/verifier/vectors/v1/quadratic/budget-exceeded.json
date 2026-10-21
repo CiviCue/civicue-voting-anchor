@@ -1,0 +1,27 @@
+{
+  "description": "Voter 2 spends 3² + 2² = 13 > 10 voice credits; verification fails.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "QUADRATIC",
+    "voiceCredits": 10,
+    "options": ["A", "B"],
+    "ballots": [
+      {
+        "voter": 1,
+        "allocations": {
+          "A": 3
+        }
+      },
+      {
+        "voter": 2,
+        "allocations": {
+          "A": 3,
+          "B": 2
+        }
+      }
+    ]
+  },
+  "expected": {
+    "error": "BUDGET_EXCEEDED"
+  }
+}

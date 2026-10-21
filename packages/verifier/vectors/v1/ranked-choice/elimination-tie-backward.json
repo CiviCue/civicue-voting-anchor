@@ -1,0 +1,70 @@
+{
+  "description": "E's ballot transfers to D, so C and D tie for last in round 2; D had fewer votes in round 1, so D (not C, the smaller id) is eliminated.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "RANKED_CHOICE",
+    "options": ["A", "B", "C", "D", "E"],
+    "ballots": [
+      {
+        "voter": 1,
+        "rankedOptions": ["A"]
+      },
+      {
+        "voter": 2,
+        "rankedOptions": ["A"]
+      },
+      {
+        "voter": 3,
+        "rankedOptions": ["A"]
+      },
+      {
+        "voter": 4,
+        "rankedOptions": ["A"]
+      },
+      {
+        "voter": 5,
+        "rankedOptions": ["B"]
+      },
+      {
+        "voter": 6,
+        "rankedOptions": ["B"]
+      },
+      {
+        "voter": 7,
+        "rankedOptions": ["B"]
+      },
+      {
+        "voter": 8,
+        "rankedOptions": ["B"]
+      },
+      {
+        "voter": 9,
+        "rankedOptions": ["C"]
+      },
+      {
+        "voter": 10,
+        "rankedOptions": ["C"]
+      },
+      {
+        "voter": 11,
+        "rankedOptions": ["C"]
+      },
+      {
+        "voter": 12,
+        "rankedOptions": ["D"]
+      },
+      {
+        "voter": 13,
+        "rankedOptions": ["D"]
+      },
+      {
+        "voter": 14,
+        "rankedOptions": ["E", "D"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0x32d8f6637a9f5016a21db55ad322c62edecd01c48bc4c5af208b1dccd980473e",
+    "tallyHash": "0x3fc2db36b086d2e00335c16ef184aab23379c2015351d4615d907008c5172be0"
+  }
+}

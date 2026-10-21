@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "declaration": false,
+    "types": ["node"],
+    "allowImportingTsExtensions": true
+  },
+  "include": ["scripts", "test-ts", "wagmi.config.ts"]
+}

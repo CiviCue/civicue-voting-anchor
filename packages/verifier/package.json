@@ -1,0 +1,45 @@
+{
+  "name": "@civicue/voting-anchor-verifier",
+  "version": "0.1.0",
+  "description": "Independently verify CiviCue on-chain vote anchors: recompute the Merkle root and method-aware tally from the published ballot dataset and compare them to the AnchorRegistry record on Base.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CiviCue/civicue-voting-anchor.git",
+    "directory": "packages/verifier"
+  },
+  "type": "module",
+  "bin": {
+    "voting-anchor-verifier": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./vectors": {
+      "types": "./dist/vectors.d.ts",
+      "default": "./dist/vectors.js"
+    },
+    "./vectors/*.json": "./vectors/*.json"
+  },
+  "files": [
+    "dist",
+    "docs",
+    "README.zh-TW.md",
+    "vectors"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "node --test \"test/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json && prettier --check . --ignore-path ../../.prettierignore"
+  },
+  "dependencies": {
+    "@civicue/voting-anchor-contracts": "workspace:*",
+    "viem": "^2.56.9"
+  }
+}

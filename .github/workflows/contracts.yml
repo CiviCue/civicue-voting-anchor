@@ -1,0 +1,101 @@
+name: contracts
+
+on:
+  pull_request:
+    paths:
+      - "packages/contracts/**"
+      - ".github/workflows/contracts.yml"
+  push:
+    branches: [main]
+    paths:
+      - "packages/contracts/**"
+      - ".github/workflows/contracts.yml"
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: packages/contracts
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      FOUNDRY_PROFILE: ci
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Each Foundry dependency must sit exactly on its release tag. Bump the tag
+      # here together with the submodule commit (see packages/contracts/README.md).
+      - name: Dependencies pinned to release tags
+        working-directory: .
+        run: |
+          status=0
+          check() {
+            local path=$1 tag=$2
+            local url pinned expected
+            url=$(git config -f .gitmodules "submodule.$path.url")
+            pinned=$(git rev-parse "HEAD:$path")
+            expected=$(git ls-remote "$url" "refs/tags/$tag" "refs/tags/$tag^{}" | sort -k2 | tail -n1 | cut -f1)
+            if [ -z "$expected" ]; then
+              echo "::error::$path: tag $tag not found at $url"; status=1
+            elif [ "$pinned" != "$expected" ]; then
+              echo "::error::$path is pinned to $pinned, expected $tag ($expected)"; status=1
+            else
+              echo "$path: $tag ($pinned)"
+            fi
+          }
+          check packages/contracts/lib/openzeppelin-contracts v5.7.0
+          check packages/contracts/lib/forge-std v1.17.0
+          exit $status
+
+      - uses: foundry-rs/foundry-toolchain@v1
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: .
+
+      - name: Format
+        run: forge fmt --check
+
+      - name: Build (forge + ABI codegen + TypeScript)
+        run: pnpm build
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test (unit, scenario, invariant)
+        run: forge test -vvv
+
+      - name: Integration (anvil + viem)
+        run: pnpm test:integration
+
+      - name: Gas snapshot
+        run: forge snapshot --check --match-contract AnchorRegistryTest --no-match-test testFuzz
+
+      - name: Coverage (100% lines on src/)
+        run: |
+          forge coverage --report summary --no-match-coverage "(test|script)/" | tee coverage.txt
+          grep -E "^\| src/AnchorRegistry.sol +\| 100\.00%" coverage.txt
+
+  slither:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: crytic/slither-action@v0.4.1
+        with:
+          target: packages/contracts
+          fail-on: medium
+          slither-args: --filter-paths "lib/|test/|script/"

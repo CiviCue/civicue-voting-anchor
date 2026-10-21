@@ -1,0 +1,30 @@
+{
+  "description": "Two options tie for the most votes; both are winners.",
+  "dataset": {
+    "schemaVersion": 1,
+    "votingMethod": "MAJORITY",
+    "options": ["A", "B", "C"],
+    "ballots": [
+      {
+        "voter": 1,
+        "optionIds": ["A"]
+      },
+      {
+        "voter": 2,
+        "optionIds": ["B"]
+      },
+      {
+        "voter": 3,
+        "optionIds": ["B"]
+      },
+      {
+        "voter": 4,
+        "optionIds": ["A"]
+      }
+    ]
+  },
+  "expected": {
+    "merkleRoot": "0x622ed811562c737f1f27797c55f8f3e3566b2b06618655b64ddb2dc9672bad83",
+    "tallyHash": "0x2015b3981fe0773f1910fd2c3d079a22bec9025115608c192ecebb37bbdbf1b4"
+  }
+}
