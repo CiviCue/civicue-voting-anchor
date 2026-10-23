@@ -27,6 +27,16 @@ pnpm test
 
 This repository holds only the open parts of the anchor: the contract, the canonical schema, the verifier, and their docs. The CiviCue platform is closed source, and operational details of how it is run are not part of this repository. The `leak-guard` check enforces this. If it flags a line in your PR, a maintainer will help you reword it.
 
+## Releasing
+
+For maintainers. Each package under `packages/` is released on its own:
+
+1. Merge the version bump in the package's `package.json` into `main`.
+2. Tag that commit on `main` as `@civicue/<package>@<version>` and push the tag.
+3. Approve the `npm` environment in the `release` workflow run under Actions.
+
+The workflow builds, tests, and packs the package, then publishes it with npm provenance, so anyone can trace the published tarball back to the commit and workflow run that built it.
+
 ## Security issues
 
 Do not open a public issue for a vulnerability. See [SECURITY.md](SECURITY.md).

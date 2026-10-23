@@ -24,6 +24,9 @@
     "README.zh-TW.md",
     "src"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "forge build && wagmi generate && node scripts/gen-artifact.ts && tsc -p tsconfig.json",
     "test": "forge test && node --test \"test-ts/**/*.test.ts\"",
