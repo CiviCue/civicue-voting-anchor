@@ -27,6 +27,16 @@ pnpm test
 
 這個 repo 只包含錨定機制中開源的部分：合約、標準選票格式、驗證工具，以及相關文件。CiviCue 平台本身是閉源的，平台如何營運的細節也不在這個 repo 的範圍內。`leak-guard` 檢查會確保這一點。如果它標出你 PR 中的某一行，維護者會協助你改寫。
 
+## 發佈套件
+
+這段寫給維護者。`packages/` 下的每個套件各自發佈：
+
+1. 把該套件 `package.json` 的版本號更新合進 `main`。
+2. 在 `main` 的那個 commit 上打 tag `@civicue/<package>@<version>`，再 push 這個 tag。
+3. 到 Actions 裡的 `release` workflow，核准 `npm` environment。
+
+workflow 會建置、測試並打包套件，再帶著 npm provenance 發佈。任何人都能從發佈的 tarball 追溯到建置它的 commit 和 workflow 執行紀錄。
+
 ## 安全性問題
 
 請不要用公開 issue 回報漏洞，請參閱 [SECURITY.md](SECURITY.md)。

@@ -1,0 +1,117 @@
+name: release
+
+# Publishes one workspace package to npm when a maintainer pushes a tag
+# `@civicue/<package>@<version>` that points at a commit on main.
+on:
+  push:
+    tags: ["@civicue/*@*"]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write # npm provenance and trusted publishing (OIDC)
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Resolve the package from the tag
+        id: target
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [[ ! "$TAG" =~ ^(@civicue/[a-z0-9-]+)@([0-9]+\.[0-9]+\.[0-9]+([-+][0-9A-Za-z.-]+)?)$ ]]; then
+            echo "::error::tag '$TAG' is not of the form @civicue/<package>@<version>"; exit 1
+          fi
+          name=${BASH_REMATCH[1]} version=${BASH_REMATCH[2]}
+          dir=""
+          for manifest in packages/*/package.json; do
+            if [ "$(jq -r .name "$manifest")" = "$name" ]; then dir=$(dirname "$manifest"); fi
+          done
+          if [ -z "$dir" ]; then
+            echo "::error::no package under packages/ is named $name"; exit 1
+          fi
+          if [ "$(jq -r '.private // false' "$dir/package.json")" = "true" ]; then
+            echo "::error::$name is private and is never published"; exit 1
+          fi
+          actual=$(jq -r .version "$dir/package.json")
+          if [ "$actual" != "$version" ]; then
+            echo "::error::tag version $version does not match $dir/package.json version $actual"; exit 1
+          fi
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::tag $TAG points at $GITHUB_SHA, which is not on main"; exit 1
+          fi
+          echo "Publishing $name@$version from $dir ($GITHUB_SHA)"
+          {
+            echo "name=$name"
+            echo "version=$version"
+            echo "dir=$dir"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: foundry-rs/foundry-toolchain@dba66c27052e63476d886f22216e119ba7e615bf # v1.9.2
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build and test
+        env:
+          NAME: ${{ steps.target.outputs.name }}
+        run: |
+          pnpm --filter "$NAME" build
+          pnpm --filter "$NAME" test
+
+      - name: Check the recorded build information
+        env:
+          DIR: ${{ steps.target.outputs.dir }}
+        run: |
+          if [ ! -f "$DIR/dist/artifact.js" ]; then
+            echo "$DIR records no build information"; exit 0
+          fi
+          node --input-type=module -e '
+            const { anchorRegistryBuild: b } = await import(`${process.cwd()}/${process.env.DIR}/dist/artifact.js`);
+            console.log(b);
+            if (b.gitDirty !== false) throw new Error("the contract sources had uncommitted changes at build time");
+            if (b.gitCommit !== process.env.GITHUB_SHA) throw new Error(`built from ${b.gitCommit}, expected ${process.env.GITHUB_SHA}`);
+          '
+
+      - name: Pack
+        id: pack
+        env:
+          NAME: ${{ steps.target.outputs.name }}
+        run: |
+          out="$RUNNER_TEMP/pack"
+          mkdir -p "$out"
+          pnpm --filter "$NAME" pack --pack-destination "$out"
+          tarball=$(ls "$out"/*.tgz)
+          tar -tzf "$tarball"
+          echo "tarball=$tarball" >> "$GITHUB_OUTPUT"
+
+      - name: Ensure npm 11.5.1 or later (trusted publishing)
+        run: |
+          current=$(npm --version)
+          if ! printf '%s\n' 11.5.1 "$current" | sort -V -C; then
+            npm install -g npm@11
+          fi
+          npm --version
+
+      # In GitHub Actions npm tries trusted publishing (OIDC) first and falls back to
+      # NODE_AUTH_TOKEN, so the workflow is unchanged whether or not the secret exists.
+      - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          TARBALL: ${{ steps.pack.outputs.tarball }}
+        run: npm publish "$TARBALL" --provenance --access public
